@@ -48,7 +48,7 @@
 
     //Basket 1.
     const ul1 = document.querySelector("ul.basket1");
-    data[0].items.forEach(function(e){
+    data[0].items.forEach(e => {
         const li = document.createElement("li");
         li.innerHTML = e.description + " R" + e.price;
         ul1.append(li);
@@ -59,7 +59,8 @@
     //Passing a function to map.
     const prices = data[0].items.map(p => p.price);
     //Arrow function with two arguments.
-    const average = prices.reduce((a,b) => a + b) / prices.length;
+    let average = prices.reduce((curr,prev) => curr + prev) / prices.length;
+    average = average.toFixed(2);
     const averagePrice1 = (`Average Price : R${average}`);
     avrP[0].innerHTML = averagePrice1;
 
@@ -75,35 +76,23 @@
 
     //Get minimum prices across all objects in the array.
     const minPrc = document.querySelectorAll("li.miP");
-    function indexOfMinimum(a) {
-        let minimum = 0;
-        for (let aElement of a) {
-            if (aElement < a[minimum]) minimum = aElement;
-        }
-        return minimum;
-    }
-    const min = prices[prices.length - 1];
-    minValue = ("Minimum Item Price : R" + min);
+    prices.sort((curr,prev) => curr-prev);
+    const min = prices[0];
+    minValue = (`Minimum Item Price : R${min}`);
     minPrc[0].innerHTML = minValue;
 
     //Get maximum prices across all objects in the array.
     const maxPrc = document.querySelectorAll("li.maP");
-    function indexOfMaximum(a) {
-        let maximum = 0;
-        for (let aElement of a) {
-            if (aElement < a[maximum]) maximum = aElement;
-        }
-        return maximum;
-    }
-    const max = prices[3];
-    maxValue = ("Maximum Item Price : R" + max);
+    prices.sort((curr,prev) => curr-prev);
+    const max = prices[prices.length - 1];
+    maxValue =  (`Maximum Item Price : R${max}`);
     maxPrc[0].innerHTML = maxValue;
 
     //Total Basket value + 15% vat.
     const totalBasket = document.querySelectorAll("li.t-tax");
     let totalValue = data[0].items
-        .map(description => description.price)
-        .reduce((acc, curr) => acc + curr);
+    .map(description => description.price)
+    .reduce((acc, curr) => acc + curr);
     totalValue += (totalValue * 0.15);
     //Rounding price to two decimals.
     totalValue = totalValue.toFixed(2);
@@ -113,7 +102,7 @@
     //Basket 2.
     const ul2 = document.querySelector("ul.basket2");
     data[1].items.forEach(function(e){
-        const li = document.createElement("li")
+        const li = document.createElement("li");
         li.innerHTML = e.description + " R" + e.price;
         ul2.append(li);
     });
@@ -132,42 +121,30 @@
     const tvP2 = document.querySelectorAll("li.tv2");
     //Arrow function with two arguments.
     const totalPrice = data[1].items
-        .map(description => description.price)
-        .reduce((accumulator, currentValue) => accumulator + currentValue);
+    .map(description => description.price)
+    .reduce((accumulator, currentValue) => accumulator + currentValue);
     totalPrice1 = (`Total Price : R${totalPrice}`);
     tvP2[0].innerHTML = totalPrice1;
 
     //Get minimum itemPrices across all objects in the array.
     const minP2 = document.querySelectorAll("li.miP2");
-    function indexOfMinimum(min) {
-        let minimum = 0;
-        for (let minElement of min) {
-            if (minElement < min[minimum]) minimum = minElement;
-        }
-        return minimum;
-    }
-    const minP = itemPrices[2];
-    minimumPrice1 = ("Minimum Item Price : R" + minP);
+    itemPrices.sort((curr,prev) => curr-prev);
+    const minP = itemPrices[0];
+    minimumPrice1 = (`Minimum Item Price: ${minP}`);
     minP2[0].innerHTML = minimumPrice1;
 
     //Get maximum itemPrices across all objects in the array.
     const maxP2 = document.querySelectorAll("li.maxP2");
-    function indexOfMaximum(max) {
-        let maximum = 0;
-        for (let maxElement of max) {
-            if (maxElement < max[maximum]) maximum = maxElement;
-        }
-        return maximum;
-    }
-    const maxP = itemPrices[1];
-    maximumPrice1 = ("Maximum Item Price : R" + maxP);
+    itemPrices.sort((curr,prev) => curr-prev);
+    const maxP = itemPrices[itemPrices.length - 1];
+    maximumPrice1 = (`Maximum Item Price: ${maxP}`);
     maxP2[0].innerHTML = maximumPrice1;
 
     //Calculating the total basket value + 15% vat.
     const totalBasket2 = document.querySelectorAll("li.t-tax2");
     let totalValue1 = data[1].items
-        .map(description => description.price)
-        .reduce((acc, curr) => acc + curr);
+    .map(description => description.price)
+    .reduce((acc, curr) => acc + curr);
     totalValue1 += (totalValue1 * 0.15);
     //Rounding the  price to 2 decimal.
     totalValue1 = totalValue1.toFixed(2);
