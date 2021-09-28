@@ -130,14 +130,14 @@
     const minP2 = document.querySelectorAll("li.miP2");
     itemPrices.sort((curr,prev) => curr-prev);
     const minP = itemPrices[0];
-    minimumPrice1 = (`Minimum Item Price: ${minP}`);
+    minimumPrice1 = (`Minimum Item Price: R${minP}`);
     minP2[0].innerHTML = minimumPrice1;
 
     //Get maximum itemPrices across all objects in the array.
     const maxP2 = document.querySelectorAll("li.maxP2");
     itemPrices.sort((curr,prev) => curr-prev);
     const maxP = itemPrices[itemPrices.length - 1];
-    maximumPrice1 = (`Maximum Item Price: ${maxP}`);
+    maximumPrice1 = (`Maximum Item Price: R${maxP}`);
     maxP2[0].innerHTML = maximumPrice1;
 
     //Calculating the total basket value + 15% vat.
