@@ -1,154 +1,134 @@
-    const myDemo = document.querySelectorAll("p.demo");
-    const data = [
-        {
-            code: "basket1",
-            description: "basket 1",
-            items: [
-                {
-                    description: "apples",
-                    price: 10.12
-                },
-                {
-                    description: "bread",
-                    price: 12.15
-                },
-                {
-                    description: "rice",
-                    price: 15.08
-                },
-                {
-                    description: "potatoes",
-                    price: 23
-                },
-                {
-                    description: "chillies",
-                    price: 0.50
-                }
-            ]
-        },
-        {
-            code: "basket2",
-            description: "basket 2",
-            items: [
-                {
-                    description: "coke",
-                    price: 19.26
-                },
-                {
-                    description: "flour",
-                    price: 24.00
-                },
-                {
-                    description: "cheese",
-                    price: 15.16
-                }
-            ]
-        }
-    ];
+const data = [
+    {
+        code: "basket1",
+        description: "basket 1",
+        items: [
+            {
+                description: "apples",
+                price: "R10.12"
+            },
+            {
+                description: "bread",
+                price: "R12.15"
+            },
+            {
+                description: "rice",
+                price: "R15.08"
+            },
+            {
+                description: "potatoes",
+                price: "R23"
+            },
+            {
+                description: "chillies",
+                price: "R0.50"
+            }
+        ]
+    },
+    {
+        code: "basket2",
+        description: "basket 2",
+        items: [
+            {
+                description: "coke",
+                price: "R19.26"
+            },
+            {
+                description: "flour",
+                price: "R24.00"
+            },
+            {
+                description: "cheese",
+                price: "R15.16"
+            }
+        ]
+    }
+];
 
-    //Basket 1.
-    const ul1 = document.querySelector("ul.basket1");
-    data[0].items.forEach(e => {
-        const li = document.createElement("li");
-        li.innerHTML = e.description + " R" + e.price;
-        ul1.append(li);
-    });
+const dataStructure = [];
+for (const basket of data) {
+    const basketData = {};
+    basketData.key = basket.code;
+    basketData.title = basket.description;
 
     //Average Price.
-    const avrP = document.querySelectorAll("li.avP");
-    //Passing a function to map.
-    const prices = data[0].items.map(p => p.price);
+    const prices = basket.items.map(p => parseFloat(p.price.replace("R", "")));
     //Arrow function with two arguments.
-    let average = prices.reduce((curr,prev) => curr + prev) / prices.length;
+    let average = prices.reduce((curr, prev) => curr + prev) / prices.length;
     average = average.toFixed(2);
-    const averagePrice1 = (`Average Price : R${average}`);
-    avrP[0].innerHTML = averagePrice1;
+    basketData.averagePrice = average;
 
     //Total Price.
-    const tvP = document.querySelectorAll("li.tv");
     //Assigning variable total.
-    const total = data[0].items
-    //Arrow function with two arguments.
-    .map(description => description.price)
-    .reduce((acc, curr) => acc + curr);
-    totalP = (`Total Price : R${total}`);
-    tvP[0].innerHTML = totalP;
+    const total = basket.items
+        .map(description => parseFloat(description.price.replace("R", "")))
+        .reduce((acc, curr) => acc + curr);
+    basketData.totalPrice = total;
 
     //Get minimum prices across all objects in the array.
-    const minPrc = document.querySelectorAll("li.miP");
-    prices.sort((curr,prev) => curr-prev);
+    prices.sort((curr, prev) => curr - prev);
     const min = prices[0];
-    minValue = (`Minimum Item Price : R${min}`);
-    minPrc[0].innerHTML = minValue;
+    basketData.minimum = min;
 
     //Get maximum prices across all objects in the array.
-    const maxPrc = document.querySelectorAll("li.maP");
-    prices.sort((curr,prev) => curr-prev);
+    prices.sort((curr, prev) => curr - prev);
     const max = prices[prices.length - 1];
-    maxValue =  (`Maximum Item Price : R${max}`);
-    maxPrc[0].innerHTML = maxValue;
+    basketData.maximum = max;
 
     //Total Basket value + 15% vat.
-    const totalBasket = document.querySelectorAll("li.t-tax");
-    let totalValue = data[0].items
-    .map(description => description.price)
-    .reduce((acc, curr) => acc + curr);
+    let totalValue = basket.items
+        .map(description => parseFloat(description.price.replace("R", "")))
+        .reduce((acc, curr) => acc + curr);
     totalValue += (totalValue * 0.15);
     //Rounding price to two decimals.
     totalValue = totalValue.toFixed(2);
-    totalV = (`Total Basket Value : R${totalValue}`);
-    totalBasket[0].innerHTML = totalV;
+    basketData.totalValueTax = totalValue;
+    dataStructure.push(basketData);
+}
 
-    //Basket 2.
-    const ul2 = document.querySelector("ul.basket2");
-    data[1].items.forEach(function(e){
-        const li = document.createElement("li");
-        li.innerHTML = e.description + " R" + e.price;
-        ul2.append(li);
-    });
+const myList = document.querySelector("#itemList");
+for (const basket of dataStructure) {
+    const li = document.createElement("li");
+    li.innerText = basket.title;
 
-    //Average price.
-    const avrP2 = document.querySelectorAll("li.avP2");
-    //Passing a function to map.
-    const itemPrices = data[1].items.map(p => p.price);
-    //Calculating average price.
-    let averagePrice = itemPrices.reduce((a,b) => a + b) / itemPrices.length;
-    averagePrice = averagePrice.toFixed(2);
-    const avgPrice = (`Average Price : R${averagePrice}`);
-    avrP2[0].innerHTML = avgPrice;
+    const basketData = data.find((item) => item.code === basket.key);
+    const basketItemList = document.createElement("ul");
+    basketItemList.classList.add("basket-items");
+    for (const item of basketData.items) {
+        const basketItem = document.createElement("li");
+        basketItem.innerText = (item.description + " " + item.price);
+        basketItemList.appendChild(basketItem);
+    }
+    li.appendChild(basketItemList);
 
-    //Total price.
-    const tvP2 = document.querySelectorAll("li.tv2");
-    //Arrow function with two arguments.
-    const totalPrice = data[1].items
-    .map(description => description.price)
-    .reduce((accumulator, currentValue) => accumulator + currentValue);
-    totalPrice1 = (`Total Price : R${totalPrice}`);
-    tvP2[0].innerHTML = totalPrice1;
+    const summaryList = document.createElement("ul");
+    summaryList.classList.add("summary-list");
 
-    //Get minimum itemPrices across all objects in the array.
-    const minP2 = document.querySelectorAll("li.miP2");
-    itemPrices.sort((curr,prev) => curr-prev);
-    const minP = itemPrices[0];
-    minimumPrice1 = (`Minimum Item Price: R${minP}`);
-    minP2[0].innerHTML = minimumPrice1;
+    //Display average price
+    const averageListItem = document.createElement("li");
+    averageListItem.innerText = "Average Price" + basket.averagePrice;
 
-    //Get maximum itemPrices across all objects in the array.
-    const maxP2 = document.querySelectorAll("li.maxP2");
-    itemPrices.sort((curr,prev) => curr-prev);
-    const maxP = itemPrices[itemPrices.length - 1];
-    maximumPrice1 = (`Maximum Item Price: R${maxP}`);
-    maxP2[0].innerHTML = maximumPrice1;
+    //Display total price
+    const totalListItem = document.createElement("li");
+    totalListItem.innerText = "Total Price R" + basket.totalPrice;
 
-    //Calculating the total basket value + 15% vat.
-    const totalBasket2 = document.querySelectorAll("li.t-tax2");
-    let totalValue1 = data[1].items
-    .map(description => description.price)
-    .reduce((acc, curr) => acc + curr);
-    totalValue1 += (totalValue1 * 0.15);
-    //Rounding the  price to 2 decimal.
-    totalValue1 = totalValue1.toFixed(2);
-    tValue =  totalValue1;
-    totalBasket2[0].innerHTML = (`Total Basket Value : R${totalValue1}`);
+    //Display minimum price
+    const minimumListItem = document.createElement("li");
+    minimumListItem.innerText = "Minimum Price R" + basket.minimum;
 
+    //Display maximum price
+    const maximumListItem = document.createElement("li");
+    maximumListItem.innerText = "Maximum Price R" + basket.maximum;
+
+    const totalValueListItem = document.createElement("li");
+    totalValueListItem.innerText = "Total Basket value + 15% vat R" + basket.totalValueTax;
+
+    summaryList.appendChild(averageListItem);
+    summaryList.appendChild(totalListItem);
+    summaryList.appendChild(minimumListItem);
+    summaryList.appendChild(maximumListItem);
+    summaryList.appendChild(totalValueListItem);
+    li.appendChild(summaryList);
+    myList.appendChild(li);
+}
 
