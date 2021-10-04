@@ -44,91 +44,111 @@ const data = [
         ]
     }
 ];
+populateItemList = () => {
 
-const dataStructure = [];
-for (const basket of data) {
-    const basketData = {};
-    basketData.key = basket.code;
-    basketData.title = basket.description;
+    const dataStructure = [];
 
-    //Average Price.
-    const prices = basket.items.map(p => parseFloat(p.price.replace("R", "")));
-    //Arrow function with two arguments.
-    let average = prices.reduce((curr, prev) => curr + prev) / prices.length;
-    average = average.toFixed(2);
-    basketData.averagePrice = average;
+    for (const basket of data) {
+        const basketData = {};
+        basketData.key = basket.code;
+        basketData.title = basket.description;
 
-    //Total Price.
-    //Assigning variable total.
-    const total = basket.items
-        .map(description => parseFloat(description.price.replace("R", "")))
-        .reduce((acc, curr) => acc + curr);
-    basketData.totalPrice = total;
+        //Average Price.
+        const prices = basket.items.map(p => parseFloat(p.price.replace("R", "")));
+        //Arrow function with two arguments.
+        let average = prices.reduce((curr, prev) => curr + prev) / prices.length;
+        average = average.toFixed(2);
+        basketData.averagePrice = average;
 
-    //Get minimum prices across all objects in the array.
-    prices.sort((curr, prev) => curr - prev);
-    const min = prices[0];
-    basketData.minimum = min;
+        //Total Price.
+        //Assigning variable total.
+        const total = basket.items
+            .map(description => parseFloat(description.price.replace("R", "")))
+            .reduce((acc, curr) => acc + curr);
+        basketData.totalPrice = total;
 
-    //Get maximum prices across all objects in the array.
-    prices.sort((curr, prev) => curr - prev);
-    const max = prices[prices.length - 1];
-    basketData.maximum = max;
+        //Get minimum prices across all objects in the array.
+        prices.sort((curr, prev) => curr - prev);
+        const min = prices[0];
+        basketData.minimum = min;
 
-    //Total Basket value + 15% vat.
-    let totalValue = basket.items
-        .map(description => parseFloat(description.price.replace("R", "")))
-        .reduce((acc, curr) => acc + curr);
-    totalValue += (totalValue * 0.15);
-    //Rounding price to two decimals.
-    totalValue = totalValue.toFixed(2);
-    basketData.totalValueTax = totalValue;
-    dataStructure.push(basketData);
-}
+        //Get maximum prices across all objects in the array.
+        prices.sort((curr, prev) => curr - prev);
+        const max = prices[prices.length - 1];
+        basketData.maximum = max;
 
-const myList = document.querySelector("#itemList");
-for (const basket of dataStructure) {
-    const li = document.createElement("li");
-    li.innerText = basket.title;
-
-    const basketData = data.find((item) => item.code === basket.key);
-    const basketItemList = document.createElement("ul");
-    basketItemList.classList.add("basket-items");
-    for (const item of basketData.items) {
-        const basketItem = document.createElement("li");
-        basketItem.innerText = (item.description + " " + item.price);
-        basketItemList.appendChild(basketItem);
+        //Total Basket value + 15% vat.
+        let totalValue = basket.items
+            .map(description => parseFloat(description.price.replace("R", "")))
+            .reduce((acc, curr) => acc + curr);
+        totalValue += (totalValue * 0.15);
+        //Rounding price to two decimals.
+        totalValue = totalValue.toFixed(2);
+        basketData.totalValueTax = totalValue;
+        dataStructure.push(basketData);
     }
-    li.appendChild(basketItemList);
 
-    const summaryList = document.createElement("ul");
-    summaryList.classList.add("summary-list");
+    const myList = document.querySelector("#itemList");
+    for (const basket of dataStructure) {
+        const li = document.createElement("li");
+        li.innerText = basket.title;
 
-    //Display average price
-    const averageListItem = document.createElement("li");
-    averageListItem.innerText = "Average Price" + basket.averagePrice;
+        const basketData = data.find((item) => item.code === basket.key);
+        const basketItemList = document.createElement("ul");
+        basketItemList.classList.add("basket-items");
+        for (const item of basketData.items) {
+            const basketItem = document.createElement("li");
+            basketItem.innerText = (item.description + " " + item.price);
+            basketItemList.appendChild(basketItem);
+        }
+        li.appendChild(basketItemList);
 
-    //Display total price
-    const totalListItem = document.createElement("li");
-    totalListItem.innerText = "Total Price R" + basket.totalPrice;
+        const summaryList = document.createElement("ul");
+        summaryList.classList.add("summary-list");
 
-    //Display minimum price
-    const minimumListItem = document.createElement("li");
-    minimumListItem.innerText = "Minimum Price R" + basket.minimum;
+        //Display average price
+        const averageListItem = document.createElement("li");
+        averageListItem.innerText = "Average Price R" + basket.averagePrice;
 
-    //Display maximum price
-    const maximumListItem = document.createElement("li");
-    maximumListItem.innerText = "Maximum Price R" + basket.maximum;
+        //Display total price
+        const totalListItem = document.createElement("li");
+        totalListItem.innerText = "Total Price R" + basket.totalPrice;
 
-    const totalValueListItem = document.createElement("li");
-    totalValueListItem.innerText = "Total Basket value + 15% vat R" + basket.totalValueTax;
+        //Display minimum price
+        const minimumListItem = document.createElement("li");
+        minimumListItem.innerText = "Minimum Price R" + basket.minimum;
 
-    summaryList.appendChild(averageListItem);
-    summaryList.appendChild(totalListItem);
-    summaryList.appendChild(minimumListItem);
-    summaryList.appendChild(maximumListItem);
-    summaryList.appendChild(totalValueListItem);
-    li.appendChild(summaryList);
-    myList.appendChild(li);
+        //Display maximum price
+        const maximumListItem = document.createElement("li");
+        maximumListItem.innerText = "Maximum Price R" + basket.maximum;
+
+        const totalValueListItem = document.createElement("li");
+        totalValueListItem.innerText = "Total Basket value + 15% vat R" + basket.totalValueTax;
+
+        summaryList.appendChild(averageListItem);
+        summaryList.appendChild(totalListItem);
+        summaryList.appendChild(minimumListItem);
+        summaryList.appendChild(maximumListItem);
+        summaryList.appendChild(totalValueListItem);
+        li.appendChild(summaryList);
+        myList.appendChild(li);
+
+    }
 }
 
+//Calling a function.
+populateItemList();
+const removeItemButton = document.querySelector("#button");
+removeItemButton.addEventListener("click", () => {
+
+    //Add and removing item.
+    data[1].items.push(data[0].items[3]);
+    data[0].items.splice(3, 1);
+    const list = document.querySelector("#itemList");
+
+    while (list.hasChildNodes()) {
+        list.removeChild(list.firstChild);
+    }
+
+    populateItemList();
+});
