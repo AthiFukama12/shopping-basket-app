@@ -1,17 +1,9 @@
-* {
-    box-sizing: border-box;
+
+.basket-items {
+    list-style-type: none;
 }
 
-.basket-1{
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-.basket-items{
-    list-style-type:none;
-}
-
-.summary-list li{
+.summary-list li {
     font-weight: bold;
     background-color: lightgrey;
 }

@@ -44,8 +44,8 @@ const data = [
         ]
     }
 ];
-populateItemList = () => {
-
+// populateItemList = () => {
+calculate = () => {
     const dataStructure = [];
 
     for (const basket of data) {
@@ -87,8 +87,12 @@ populateItemList = () => {
         basketData.totalValueTax = totalValue;
         dataStructure.push(basketData);
     }
+    return dataStructure;
+}
 
+render = dataStructure => {
     const myList = document.querySelector("#itemList");
+    let id = 1;
     for (const basket of dataStructure) {
         const li = document.createElement("li");
         li.innerText = basket.title;
@@ -96,9 +100,11 @@ populateItemList = () => {
         const basketData = data.find((item) => item.code === basket.key);
         const basketItemList = document.createElement("ul");
         basketItemList.classList.add("basket-items");
+        basketItemList.setAttribute("id", `basket${id}`);
+        id++;
         for (const item of basketData.items) {
             const basketItem = document.createElement("li");
-            basketItem.innerText = (item.description + " " + item.price);
+            basketItem.innerText = `${item.description} ${item.price}`
             basketItemList.appendChild(basketItem);
         }
         li.appendChild(basketItemList);
@@ -106,21 +112,21 @@ populateItemList = () => {
         const summaryList = document.createElement("ul");
         summaryList.classList.add("summary-list");
 
-        //Display average price
+        //Display average price.
         const averageListItem = document.createElement("li");
-        averageListItem.innerText = "Average Price R" + basket.averagePrice;
+        averageListItem.innerText = `Average Price R${basket.averagePrice}`
 
-        //Display total price
+        //Display total price.
         const totalListItem = document.createElement("li");
-        totalListItem.innerText = "Total Price R" + basket.totalPrice;
+        totalListItem.innerText = `Total Price R${basket.totalPrice}`
 
-        //Display minimum price
+        //Display minimum price.
         const minimumListItem = document.createElement("li");
-        minimumListItem.innerText = "Minimum Price R" + basket.minimum;
+        minimumListItem.innerText = `Minimum Price R${basket.minimum}`
 
-        //Display maximum price
+        //Display maximum price.
         const maximumListItem = document.createElement("li");
-        maximumListItem.innerText = "Maximum Price R" + basket.maximum;
+        maximumListItem.innerText = `Maximum Price R${basket.maximum}`
 
         const totalValueListItem = document.createElement("li");
         totalValueListItem.innerText = "Total Basket value + 15% vat R" + basket.totalValueTax;
@@ -137,18 +143,23 @@ populateItemList = () => {
 }
 
 //Calling a function.
-populateItemList();
+const dataStructure = calculate();
+render(dataStructure);
+
 const removeItemButton = document.querySelector("#button");
 removeItemButton.addEventListener("click", () => {
-
-    //Add and removing item.
-    data[1].items.push(data[0].items[3]);
-    data[0].items.splice(3, 1);
-    const list = document.querySelector("#itemList");
-
-    while (list.hasChildNodes()) {
-        list.removeChild(list.firstChild);
+    const list1 = document.querySelector("#basket1");
+    const list2 = document.querySelector("#basket2");
+    let entry;
+    if (list1.childNodes[3] != null) {
+        entry = list1.childNodes[3];
+    }
+    if (entry.innerText.includes("potatoes") === true) {
+        list1.removeChild(entry);
+        list2.appendChild(entry);
     }
 
-    populateItemList();
 });
+
+
+
