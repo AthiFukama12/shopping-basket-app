@@ -44,7 +44,8 @@ const data = [
         ]
     }
 ];
-// populateItemList = () => {
+// const search = document.querySelector(".filter-input");
+// search.addEventListener("input", filter);
 calculate = () => {
     const dataStructure = [];
 
@@ -160,6 +161,26 @@ removeItemButton.addEventListener("click", () => {
     }
 
 });
+
+//Search items
+
+const input = document.querySelector("input");
+const  list1 = document.querySelector("#basket1");
+
+const filter = () => {
+     const listItems = (li) => {
+        search = input.value.toLowerCase();
+        found = text.indexOf(search);
+
+        if (search == "" || found != 1) {
+            li.style.display = "block";
+        }
+        else{
+            li.style.display = "none";
+        }
+    }
+}
+input.addEventListener("input", filter);
 
 
 
